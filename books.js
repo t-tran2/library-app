@@ -100,6 +100,11 @@ newBook.addEventListener('click', () => {
     readInput.setAttribute('id', 'read');
     readInput.setAttribute('name', 'read');
 
+    const submit = document.createElement("button");
+    submit.setAttribute('type', 'button');
+    submit.setAttribute('id', 'submit-button')
+    submit.textContent = "Submit";
+
     newBookForm.appendChild(titleLabel);
     newBookForm.appendChild(titleInput);
     newBookForm.appendChild(authorLabel);
@@ -108,10 +113,38 @@ newBook.addEventListener('click', () => {
     newBookForm.appendChild(pagesInput);
     newBookForm.appendChild(readLabel);
     newBookForm.appendChild(readInput);
+    newBookForm.appendChild(submit);
 
     document.querySelector("body").appendChild(newBookForm);
     newBook.setAttribute('disabled', '');
+
+    const submitButton = document.querySelector('#submit-button');
+    submitButton.addEventListener("click", () => {
+    const inputDOMs = document.querySelectorAll('#new-book-form input');
+    const inputValues = Array.from(inputDOMs).reduce((acc, input) => ({...acc, [input.id]: input.value}), {});
+    let newBook = new Book(inputValues.title, inputValues.author, inputValues.pages, inputValues.read);
+    addBookToLibrary(newBook);
+
+    const newRow = document.createElement('tr');
+    const newTitle = document.createElement('td');
+    const newAuthor = document.createElement('td');
+    const newPages = document.createElement('td');
+    const newRead = document.createElement('td');
+
+    newTitle.textContent = newBook.title;
+    newAuthor.textContent = newBook.author;
+    newPages.textContent = newBook.pages;
+    newRead.textContent = newBook.read;
+
+    newRow.appendChild(newTitle);
+    newRow.appendChild(newAuthor);
+    newRow.appendChild(newPages);
+    newRow.appendChild(newRead);
+    document.querySelector("#library").appendChild(newRow);
+})
 });
+
+
 
 // const book1 = new Book("test1", "author1", 234, "y");
 // addBookToLibrary(book1);
